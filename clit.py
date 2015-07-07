@@ -24,6 +24,8 @@ def parse_args():
 	parser.add_argument("-s", "--status", type=int, 
 		help="display passed argument's amount of last tweets, up to 20")
 	parser.add_argument("-t", "--tweet", help="tweet from the command line")
+	parser.add_argument("-dm", "--directmessage", 
+		help="directmessage a user from the command line")
 	opts = parser.parse_args()
 	return opts
 
@@ -52,11 +54,19 @@ def tweet(tweet):
 	tweet = api.PostUpdate(tweet)
 	print tweet.text
 
+def direct_message(user):
+	message = raw_input("Enter your message: ")
+	dm = api.PostDirectMessage(text=message, screen_name=user)
+	print "Sent: %s" % dm.text
+	print "To: @%s" % user
+
 opts = parse_args()
 
 if opts.status:
 	status(opts.status)
 elif opts.tweet:
 	tweet(opts.tweet)
+elif opts.directmessage:
+	direct_message(opts.directmessage)
 else:
 	print "pointless"
