@@ -4,11 +4,11 @@
 # their credentials
 
 # at first, it will only print to STDOUT the text of your last 5 tweets
-# I plan on adding support to ask for a specific amount of tweets, a 
+# I plan on adding support to ask for a specific amount of tweets, a
 # tweet-by-tweet display mode that allows you to interact (retweet and
 # favorite to start, with possible support for replying, checking who
 # else has retweeted and favorited and direct messaging the user of the
-# tweet) with tweets on your timeline, a way to check and send direct 
+# tweet) with tweets on your timeline, a way to check and send direct
 # messages.
 
 import argparse
@@ -21,11 +21,13 @@ api = twitter.Api(consumer_key='6Dy73JL5yIgC6oAfOwjQpHQYu',
 
 def parse_args():
 	parser = argparse.ArgumentParser()
-	parser.add_argument("-s", "--status", type=int, 
+	parser.add_argument("-f", "--feed", type=int,
 		help="display passed argument's amount of last tweets, up to 20")
 	parser.add_argument("-t", "--tweet", help="tweet from the command line")
-	parser.add_argument("-dm", "--directmessage", 
+	parser.add_argument("-dm", "--directmessage",
 		help="directmessage a user from the command line")
+	parser.add_argument("-rm", "--readmessage", type=int,
+		help="display passed argument's amount of last DMs")
 	opts = parser.parse_args()
 	return opts
 
@@ -41,9 +43,9 @@ def parse_args():
 # status = api.PostUpdate(raw_input("Status >> "))
 # print status.text
 
-def status(amount):
-	timeline = api.GetHomeTimeline(count=amount, trim_user=True, 
-		exclude_replies=True, contributor_details=False, 
+def feed(amount):
+	timeline = api.GetHomeTimeline(count=amount, trim_user=True,
+		exclude_replies=True, contributor_details=False,
 		include_entities=False)
 	#timeline.split('u[').split('],')
 
@@ -60,13 +62,20 @@ def direct_message(user):
 	print "Sent: %s" % dm.text
 	print "To: @%s" % user
 
+def read_message(amount):
+	messages = api.GetDirectMessages(count=amount, include_entities=False)
+	for m in messages:
+		print m.text
+
 opts = parse_args()
 
-if opts.status:
-	status(opts.status)
+if opts.feed:
+	feed(opts.feed)
 elif opts.tweet:
 	tweet(opts.tweet)
 elif opts.directmessage:
 	direct_message(opts.directmessage)
+elif opts.readmessage:
+	read_message(opts.readmessage)
 else:
 	print "pointless"
