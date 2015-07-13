@@ -4,12 +4,10 @@
 # their credentials
 
 # at first, it will only print to STDOUT the text of your last 5 tweets
-# I plan on adding support to ask for a specific amount of tweets, a
-# tweet-by-tweet display mode that allows you to interact (retweet and
-# favorite to start, with possible support for replying, checking who
-# else has retweeted and favorited and direct messaging the user of the
-# tweet) with tweets on your timeline, a way to check and send direct
-# messages.
+# I plan on adding support for a tweet-by-tweet display mode that allows you to
+# interact (retweet and favorite to start, with possible support for replying,
+# checking who else has retweeted and favorited and direct messaging the user of
+# the tweet)
 
 import argparse
 import twitter
